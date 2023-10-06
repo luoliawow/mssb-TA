@@ -49,5 +49,5 @@ function D2 = d2(X)
 end
 
 function D3 = d3(X) 
-    D3 = [0,-1] * X + 4;
+    D3 = [0,-1] * X + 1;
 end
