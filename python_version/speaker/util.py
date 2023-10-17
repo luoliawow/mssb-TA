@@ -1,39 +1,6 @@
 import librosa
 import numpy as np
 
-# def melfb_impl(p, n, fs):
-#     """mel freq bank
-
-#     Args:
-#         p (int): number of filters in filterbank
-#         n (int): length of fft
-#         fs (int): sample rate in Hz
-#     """
-
-#     f0 = 700 / fs
-#     fn2 = floor(n/2)
-#     lr = log(1 + 0.5/f0) / (p + 1)
-
-#     bl = n * (f0 * (np.exp(np.array([0, 1, p, p+1]) * lr) - 1))
-
-#     b1, b2, b3, b4 = + \
-#         floor(bl[0]) + 1, + \
-#         ceil(bl[1]), + \
-#         floor(bl[2]), + \
-#         min(fn2, ceil(bl[3])) - 1
-    
-#     pf = np.log(1 + np.arange(b1,b4+1) / (n*f0)) / lr
-#     fp = np.floor(pf)
-#     pm = pf - fp
-    
-#     # r = np.concatenate((fp[b2 - b1:b4 - b1 + 1], fp[:b3 - b1 + 1] + 1))
-#     # c = np.concatenate((np.arange(b2, b4 + 1), np.arange(b3 + 1))) - b1
-#     # v = np.concatenate((2 * (1 - pm[b2 - b1:b4 - b1 + 1]), 2 * pm[:b3 - b1 + 1]))
-#     r = np.concatenate([fp[b2-1:b4]-1, fp[:b3]])
-#     c = np.concatenate([np.arange(b2, b4+1), np.arange(1,b3+1)])
-#     v = 2 * np.concatenate([1-pm[b2-1:b4], pm[:b3]])
-#     return csr_matrix((v, (r, c)), shape=(p, fn2))
-
 # standard mel filter bank implement
 def melfb(p, n, fs):
     return librosa.filters.mel(sr=fs, n_fft=n, n_mels=p,norm=None)

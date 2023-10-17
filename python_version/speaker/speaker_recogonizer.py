@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import util
 from scipy.fft import dct
 import librosa
+import soundfile as sf
 
 def mfcc(x:np.ndarray, fs:int, n_fft:int, n_shift:int, n_mel:int) -> np.ndarray:
 
@@ -27,11 +28,11 @@ def mfcc(x:np.ndarray, fs:int, n_fft:int, n_shift:int, n_mel:int) -> np.ndarray:
     mfcc = dct(np.log(melspec), axis=0, norm='ortho')
     return mfcc
 
-def vq(d, k, e=1e-2):
+def vq(d: np.ndarray, k: int, e=1e-2):
     e, k = 1e-2, 16
     # init codebook with centroids of d
     r = np.mean(d, axis=1).reshape(-1,1)
-    for i in range(1,int(np.log2(k))):
+    for i in range(1,int(np.log2(k))+1):
         # split each centroid into two
         r = np.hstack((r*(1-e), r*(1+e)))
         dpr = 1e5
@@ -52,3 +53,9 @@ def vq(d, k, e=1e-2):
             else:
                 dpr = t
     return r
+
+def code(audiopath: str) -> np.ndarray:
+    audio, fs = sf.read(audiopath)
+    audio_mfcc = mfcc(audio, fs, 256, 100, 20)[1:]
+    codes = vq(audio_mfcc, 16)
+    return codes
